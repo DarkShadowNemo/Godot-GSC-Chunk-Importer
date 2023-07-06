@@ -214,7 +214,10 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 	root_node.name = source_file.get_file().get_basename() # Get the file out of the path and remove file extension
 	
 	file.seek(0)
-	var surf_tool : SurfaceTool
+	
+	var mesh_instance := MeshInstance3D.new()
+	var array_mesh : ArrayMesh = null
+	
 	var path3d_ := Path3D.new()
 	path3d_.name = "Spline Set"
 	root_node.add_child(path3d_)
@@ -222,6 +225,14 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 	
 	var path3d___ := Curve3D.new()
 	path3d_.curve = path3d___
+	
+	var Bpath3d_ := Path3D.new()
+	Bpath3d_.name = "Bounds"
+	root_node.add_child(Bpath3d_)
+	Bpath3d_.owner = root_node
+	
+	var BNDS3DPath := Curve3D.new()
+	Bpath3d_.curve = BNDS3DPath
 	
 	while 1:
 		var Chunk = file.get_32()
@@ -587,31 +598,62 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 			var unk02 = file.get_8()
 			var vertexCount = file.get_8()
 			var unk03 = file.get_8()
+			#var vertices : PackedVector3Array
+			#vertices.resize(vertexCount)
+			#var faces = [[0,1,2]]
+			var surf_tool : SurfaceTool
 			var vertices : PackedVector3Array
 			vertices.resize(vertexCount)
 			surf_tool = SurfaceTool.new()
-			#var faces = [[0,1,2]]
-			
-			surf_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+			surf_tool.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 			for i in range(vertexCount):
+				#vertices[i] = Vector3(file.get_float(),file.get_float(),file.get_float())
+				#var nz = file.get_float()
 				var vx = file.get_float()
 				var vy = file.get_float()
 				var vz = file.get_float()
 				var nz = file.get_float()
-				
+				surf_tool.add_vertex(Vector3(vx,vy,vz))
+			array_mesh = surf_tool.commit(array_mesh)
 		#elif Chunk == int(1112099905):
 			#var ActivateALIB = Animation.new()
 			#var ALIBSize = file.get_32()
 			#break
+			
+		elif Chunk == int(1396985410):
+			var BNDS_Size = file.get_32()
+			var BNDS_Ver = file.get_32()
+			var BNDS_Count = file.get_32()
+			if BNDS_Size == int(16):
+				pass
+			elif BNDS_Size:
+				
+				var BNDS_Unk01 = file.get_32()
+				var BNDS_Unk02 = file.get_32()
+				for i in range(BNDS_Count):
+					var bnds_splinex = file.get_float()
+					var bnds_spliney = file.get_float()
+					var bnds_splinez = file.get_float()
+					
+					var BNDS_unk_01 = file.get_float()
+					var BNDS_unk_02 = file.get_float()
+					var BNDS_unk_03 = file.get_float()
+					var BNDS_unk_04 = file.get_float()
+					var BNDS_unk_05 = file.get_float()
+					var BNDS_unk_06 = file.get_float()
+					var BNDS_unk_07 = file.get_float()
+					var BNDS_unk_08 = file.get_float()
+					var BNDS_unk_09 = file.get_float()
+					BNDS3DPath.add_point(Vector3(bnds_splinex,bnds_spliney,bnds_splinez))
 				
 		elif Chunk == int(810832723):
 			var SplineSetSize = file.get_32()
 			var SplineCount = file.get_32()
 			var SplineCount2 = file.get_32()
-			var SplineUnk = file.get_32()
 			if SplineSetSize == int(16):
 				pass
 			elif SplineSetSize:
+				var SplineUnk = file.get_32()
 				var SST0E2 = file.get_32()
 				var SSEUnk = file.get_32()
 				for i in range(SST0E2):
@@ -621,15 +663,6 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 					path3d___.add_point(Vector3(splineX,splineY,splineZ))
 					
 			break
-			
-		
-	var mesh_instance := MeshInstance3D.new()
-	var array_mesh : ArrayMesh = null
-	array_mesh = surf_tool.commit(array_mesh)
-	mesh_instance.mesh = array_mesh
-	mesh_instance.name = "Objects"
-	root_node.add_child(mesh_instance)
-	mesh_instance.owner = root_node
 	
 	
 	var path3d_Follow := PathFollow3D.new()
@@ -637,6 +670,17 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 	root_node.add_child(path3d_Follow)
 	path3d_Follow.reparent(path3d_)
 	path3d_Follow.owner = root_node
+	
+	var BNDS_Follow := PathFollow3D.new()
+	BNDS_Follow.name = "Follow Bounds"
+	root_node.add_child(BNDS_Follow)
+	BNDS_Follow.reparent(Bpath3d_)
+	BNDS_Follow.owner = root_node
+	
+	mesh_instance.mesh = array_mesh
+	mesh_instance.name = "Objects"
+	root_node.add_child(mesh_instance)
+	mesh_instance.owner = root_node
 	
 	var AnimationPlayerNode3D_ := AnimationPlayer.new()
 	AnimationPlayerNode3D_.name = "Animation Library"
@@ -649,6 +693,3 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 		return
 	print("Saving to %s.%s" % [save_path, _get_save_extension()])
 	return ResourceSaver.save(packed_scene, "%s.%s" % [save_path, _get_save_extension()])
-				
-				
-	
