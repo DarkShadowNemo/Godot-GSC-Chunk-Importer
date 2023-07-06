@@ -573,6 +573,8 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 				var nz = file.get_float()
 				
 		elif Chunk == int(810832723):
+			var SplineSetSize = file.get_32()
+			
 			break
 			
 	var mesh_instance := MeshInstance3D.new()
@@ -582,6 +584,11 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 	mesh_instance.name = "dragonjan"
 	root_node.add_child(mesh_instance)
 	mesh_instance.owner = root_node
+	
+	var path3d_ := Path3D.new()
+	path3d_.name = "dragonjan SplineSet"
+	root_node.add_child(path3d_)
+	path3d_.owner = root_node
 	
 	var packed_scene := PackedScene.new()
 	if (packed_scene.pack(root_node)):
