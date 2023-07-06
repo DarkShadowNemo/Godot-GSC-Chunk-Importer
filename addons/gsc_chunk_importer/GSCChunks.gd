@@ -215,9 +215,28 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 	
 	file.seek(0)
 	var surf_tool : SurfaceTool
+	var path3d_ := Path3D.new()
+	path3d_.name = "Spline Set"
+	root_node.add_child(path3d_)
+	path3d_.owner = root_node
+	
+	var path3d___ := Curve3D.new()
+	path3d_.curve = path3d___
+	
 	while 1:
 		var Chunk = file.get_32()
-		if Chunk == int(808473421):
+		if Chunk == int(1233872):
+			var TextureHeader = file.get_32()
+			var TextureSize = file.get_32()
+			var TextureCount = file.get_32()
+			var TextureUnk = file.get_32()
+			if TextureSize == int(16):
+				pass
+			elif TextureSize:
+				for i in range(TextureCount):
+					var size = file.get_16()
+					var TextureType = file.get_16()
+		elif Chunk == int(808473421):
 			var MaterialSize = file.get_32()
 			var MaterialCount = file.get_32()
 			var MaterialUnk01 = file.get_32()
@@ -556,6 +575,13 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 				var unknown27 = file.get_32()
 				var unknown28 = file.get_32()
 				var unknown29 = file.get_32()
+		#elif Chunk == int(810173007):
+			#var ObjectSize = file.get_32()
+			#var ObjectCount = file.get_32()
+			#var ObjectUnknown = file.get_32()
+			##var UnknownOffset = file.get_buffer(int(24)) # 1 2 3 4 5 6 7
+			#for i in range(ObjectCount):
+				#pass"""
 		elif Chunk == int(16777475):
 			var unk01 = file.get_8()
 			var unk02 = file.get_8()
@@ -564,6 +590,7 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 			var vertices : PackedVector3Array
 			vertices.resize(vertexCount)
 			surf_tool = SurfaceTool.new()
+			#var faces = [[0,1,2]]
 			
 			surf_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 			for i in range(vertexCount):
@@ -572,25 +599,51 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 				var vz = file.get_float()
 				var nz = file.get_float()
 				
+		#elif Chunk == int(1112099905):
+			#var ActivateALIB = Animation.new()
+			#var ALIBSize = file.get_32()
+			#break
+				
 		elif Chunk == int(810832723):
 			var SplineSetSize = file.get_32()
-			
+			var SplineCount = file.get_32()
+			var SplineCount2 = file.get_32()
+			var SplineUnk = file.get_32()
+			if SplineSetSize == int(16):
+				pass
+			elif SplineSetSize:
+				var SST0E2 = file.get_32()
+				var SSEUnk = file.get_32()
+				for i in range(SST0E2):
+					var splineX = file.get_float()
+					var splineY = file.get_float()
+					var splineZ = file.get_float()
+					path3d___.add_point(Vector3(splineX,splineY,splineZ))
+					
 			break
 			
+		
 	var mesh_instance := MeshInstance3D.new()
 	var array_mesh : ArrayMesh = null
 	array_mesh = surf_tool.commit(array_mesh)
 	mesh_instance.mesh = array_mesh
-	mesh_instance.name = "dragonjan"
+	mesh_instance.name = "Objects"
 	root_node.add_child(mesh_instance)
 	mesh_instance.owner = root_node
 	
-	var path3d_ := Path3D.new()
-	path3d_.name = "dragonjan SplineSet"
-	root_node.add_child(path3d_)
-	path3d_.owner = root_node
 	
-	var packed_scene := PackedScene.new()
+	var path3d_Follow := PathFollow3D.new()
+	path3d_Follow.name = "Follow Spline Set"
+	root_node.add_child(path3d_Follow)
+	path3d_Follow.reparent(path3d_)
+	path3d_Follow.owner = root_node
+	
+	var AnimationPlayerNode3D_ := AnimationPlayer.new()
+	AnimationPlayerNode3D_.name = "Animation Library"
+	root_node.add_child(AnimationPlayerNode3D_)
+	AnimationPlayerNode3D_.owner = root_node
+	var packed_scene := PackedScene.new();
+	
 	if (packed_scene.pack(root_node)):
 		print("Failed to pack scene.")
 		return
