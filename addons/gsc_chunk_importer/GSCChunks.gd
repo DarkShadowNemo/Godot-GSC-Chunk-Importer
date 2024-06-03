@@ -2,6 +2,7 @@
 extends EditorImportPlugin
 class_name GSCChunks_Setup
 
+#################################################
 func _get_importer_name():
 	return "gsc"
 	
@@ -213,8 +214,6 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 	var root_node := Node3D.new()
 	root_node.name = source_file.get_file().get_basename() # Get the file out of the path and remove file extension
 	
-	file.seek(0)
-	
 	var mesh_instance := MeshInstance3D.new()
 	var array_mesh : ArrayMesh = null
 	
@@ -234,366 +233,107 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 	var BNDS3DPath := Curve3D.new()
 	Bpath3d_.curve = BNDS3DPath
 	
+	file.seek(0)
+	
+	#secondary
+	
+	while 1:
+		var Chunk2 = file.get_32()
+		if Chunk2 == int(16777475):
+			var unk01 = file.get_8()
+			var unk02 = file.get_8()
+			var vertexCount2 = file.get_8()
+			var unk03 = file.get_8()
+			#var vertices : PackedVector3Array
+			#vertices.resize(vertexCount)
+			#var faces = [[0,1,2]]
+			var surf_tool2 : SurfaceTool
+			var vertices2 : PackedVector3Array
+			var faces2 : PackedVector3Array
+			vertices2.resize(vertexCount2)
+			faces2.resize(vertexCount2)
+			surf_tool2 = SurfaceTool.new()
+			surf_tool2.begin(Mesh.PRIMITIVE_TRIANGLES)
+			if vertexCount2 ==int(6):
+				
+				var fa2=-3
+				var fb2=-2
+				var fc2=-1
+				var fa21=-3
+				var fb21=-2
+				var fc21=-1
+				for j in range(1):
+					var vx19 = file.get_float()
+					var vy19 = file.get_float()
+					var vz19 = file.get_float()
+					var type4r = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx20 = file.get_float()
+					var vy20 = file.get_float()
+					var vz20 = file.get_float()
+					var type4s = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx21 = file.get_float()
+					var vy21 = file.get_float()
+					var vz21 = file.get_float()
+					var type4t = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					var vx22 = file.get_float()
+					var vy22 = file.get_float()
+					var vz22 = file.get_float()
+					var type4u = file.get_8()
+					var value1c = file.get_8()
+					var normalZc = file.get_16()
+					var vx23 = file.get_float()
+					var vy23 = file.get_float()
+					var vz23 = file.get_float()
+					var type4v = file.get_8()
+					var value1d = file.get_8()
+					var normalZd = file.get_16()
+					var vx24 = file.get_float()
+					var vy24 = file.get_float()
+					var vz24 = file.get_float()
+					var type4w = file.get_8()
+					var value1q = file.get_8()
+					var normalZq = file.get_16()
+					fa2+=1*3
+					fb2+=1*3
+					fc2+=1*3
+					fa21+=1*6
+					fb21+=1*6
+					fc21+=1*6
+					if type4r == int(1):
+						if type4s == int(1):
+							if type4t == int(0):
+								if type4u == int(1):
+									if type4v == int(1):
+										if type4w == int(0):
+											surf_tool2.add_vertex(Vector3(vx19,vy19,vz19))
+											surf_tool2.add_vertex(Vector3(vx20,vy20,vz20))
+											surf_tool2.add_vertex(Vector3(vx21,vy21,vz21))
+											surf_tool2.add_vertex(Vector3(vx22,vy22,vz22))
+											surf_tool2.add_vertex(Vector3(vx23,vy23,vz23))
+											surf_tool2.add_vertex(Vector3(vx24,vy24,vz24))
+											surf_tool2.add_index(fa2)
+											surf_tool2.add_index(fb2)
+											surf_tool2.add_index(fc2)
+											surf_tool2.add_index(fa21)
+											surf_tool2.add_index(fb21)
+											surf_tool2.add_index(fc21)
+			array_mesh = surf_tool2.commit(array_mesh)
+		elif Chunk2 == int(810832723):
+			break
+	
+	file.seek(0)
+	
+	#primary
+	
 	while 1:
 		var Chunk = file.get_32()
-		if Chunk == int(1233872):
-			var TextureHeader = file.get_32()
-			var TextureSize = file.get_32()
-			var TextureCount = file.get_32()
-			var TextureUnk = file.get_32()
-			if TextureSize == int(16):
-				pass
-			elif TextureSize:
-				for i in range(TextureCount):
-					var size = file.get_16()
-					var TextureType = file.get_16()
-		elif Chunk == int(808473421):
-			var MaterialSize = file.get_32()
-			var MaterialCount = file.get_32()
-			var MaterialUnk01 = file.get_32()
-			for i in range(MaterialCount):
-				var materialIDIndex = file.get_8()
-				var materialIDIndex2 = file.get_8()
-				var materialIDIndex3 = file.get_8()
-				var materialIDIndex4 = file.get_8()
-				var materialIDIndex5 = file.get_8()
-				var materialIDIndex6 = file.get_8()
-				var materialIDIndex7 = file.get_8()
-				var materialIDIndex8 = file.get_8()
-				var materialIDIndex9 = file.get_8()
-				var materialIDIndex10 = file.get_8()
-				var materialIDIndex11 = file.get_8()
-				var materialIDIndex12 = file.get_8()
-				var materialIDIndex13 = file.get_8()
-				var materialIDIndex14 = file.get_8()
-				var materialIDIndex15 = file.get_8()
-				var materialIDIndex16 = file.get_8()
-				var materialIDIndex17 = file.get_8()
-				var materialIDIndex18 = file.get_8()
-				var materialIDIndex19 = file.get_8()
-				var materialIDIndex20 = file.get_8()
-				var materialIDIndex21 = file.get_8()
-				var materialIDIndex22 = file.get_8()
-				var materialIDIndex23 = file.get_8()
-				var materialIDIndex24 = file.get_8()
-				var materialIDIndex25 = file.get_8()
-				var materialIDIndex26 = file.get_8()
-				var materialIDIndex27 = file.get_8()
-				var materialIDIndex28 = file.get_8()
-				var materialIDIndex29 = file.get_8()
-				var materialIDIndex30 = file.get_8()
-				var materialIDIndex31 = file.get_8()
-				var materialIDIndex32 = file.get_8()
-				var materialIDIndex33 = file.get_8()
-				var materialIDIndex34 = file.get_8()
-				var materialIDIndex35 = file.get_8()
-				var materialIDIndex36 = file.get_8()
-				var materialIDIndex37 = file.get_8()
-				var materialIDIndex38 = file.get_8()
-				var materialIDIndex39 = file.get_8()
-				var materialIDIndex40 = file.get_8()
-				var materialIDIndex41 = file.get_8()
-				var materialIDIndex42 = file.get_8()
-				var materialIDIndex43 = file.get_8()
-				var materialIDIndex44 = file.get_8()
-				var materialIDIndex45 = file.get_8()
-				var materialIDIndex46 = file.get_8()
-				var materialIDIndex47 = file.get_8()
-				var materialIDIndex48 = file.get_8()
-				var materialIDIndex49 = file.get_8()
-				var materialIDIndex50 = file.get_8()
-				var materialIDIndex51 = file.get_8()
-				var materialIDIndex52 = file.get_8()
-				var materialIDIndex53 = file.get_8()
-				var materialIDIndex54 = file.get_8()
-				var materialIDIndex55 = file.get_8()
-				var materialIDIndex56 = file.get_8()
-				var materialIDIndex57 = file.get_8()
-				var materialIDIndex58 = file.get_8()
-				var materialIDIndex59 = file.get_8()
-				var materialIDIndex60 = file.get_8()
-				var materialIDIndex61 = file.get_8()
-				var materialIDIndex62 = file.get_8()
-				var materialIDIndex63 = file.get_8()
-				var materialIDIndex64 = file.get_8()
-				var materialIDIndex65 = file.get_8()
-				var materialIDIndex66 = file.get_8()
-				var materialIDIndex67 = file.get_8()
-				var materialIDIndex68 = file.get_8()
-				var materialIDIndex69 = file.get_8()
-				var materialIDIndex70 = file.get_8()
-				var materialIDIndex71 = file.get_8()
-				var materialIDIndex72 = file.get_8()
-				var materialIDIndex73 = file.get_8()
-				var materialIDIndex74 = file.get_8()
-				var materialIDIndex75 = file.get_8()
-				var materialIDIndex76 = file.get_8()
-				var materialIDIndex77 = file.get_8()
-				var materialIDIndex78 = file.get_8()
-				var materialIDIndex79 = file.get_8()
-				var materialIDIndex80 = file.get_8()
-				var materialIDIndex81 = file.get_8()
-				var materialIDIndex82 = file.get_8()
-				var materialIDIndex83 = file.get_8()
-				var materialIDIndex84 = file.get_8()
-				var materialIDIndex85 = file.get_8()
-				var materialIDIndex86 = file.get_8()
-				var materialIDIndex87 = file.get_8()
-				var materialIDIndex88 = file.get_8()
-				var materialIDIndex89 = file.get_8()
-				var materialIDIndex90 = file.get_8()
-				var materialIDIndex91 = file.get_8()
-				var materialIDIndex92 = file.get_8()
-				var materialIDIndex93 = file.get_8()
-				var materialIDIndex94 = file.get_8()
-				var materialIDIndex95 = file.get_8()
-				var materialIDIndex96 = file.get_8()
-				var materialIDIndex97 = file.get_8()
-				var materialIDIndex98 = file.get_8()
-				var materialIDIndex99 = file.get_8()
-				var materialIDIndex100 = file.get_8()
-				var materialIDIndex101 = file.get_8()
-				var materialIDIndex102 = file.get_8()
-				var materialIDIndex103 = file.get_8()
-				var materialIDIndex104 = file.get_8()
-				var brightRed = file.get_float()
-				var brightGreen = file.get_float()
-				var brightBlue = file.get_float()
-				var brightAlpha = file.get_float()
-				var materialIDIndex105 = file.get_8()
-				var materialIDIndex106 = file.get_8()
-				var materialIDIndex107 = file.get_8()
-				var materialIDIndex108 = file.get_8()
-				var materialIDIndex109 = file.get_8()
-				var materialIDIndex110 = file.get_8()
-				var materialIDIndex111 = file.get_8()
-				var materialIDIndex112 = file.get_8()
-				var materialIDIndex113 = file.get_8()
-				var materialIDIndex114 = file.get_8()
-				var materialIDIndex115 = file.get_8()
-				var materialIDIndex116 = file.get_8()
-				var materialIDIndex117 = file.get_8()
-				var materialIDIndex118 = file.get_8()
-				var materialIDIndex119 = file.get_8()
-				var materialIDIndex120 = file.get_8()
-				var materialIDIndex121 = file.get_8()
-				var materialIDIndex122 = file.get_8()
-				var materialIDIndex123 = file.get_8()
-				var materialIDIndex124 = file.get_8() # 30
-				var materialIDIndex125 = file.get_8()
-				var materialIDIndex126 = file.get_8()
-				var materialIDIndex127 = file.get_8()
-				var materialIDIndex128 = file.get_8()
-				var materialIDIndex129 = file.get_8()
-				var materialIDIndex130 = file.get_8()
-				var materialIDIndex131 = file.get_8()
-				var materialIDIndex132 = file.get_8()
-				var materialIDIndex133 = file.get_8()
-				var materialIDIndex134 = file.get_8()
-				var materialIDIndex135 = file.get_8()
-				var materialIDIndex136 = file.get_8()
-				var materialIDIndex137 = file.get_8()
-				var materialIDIndex138 = file.get_8()
-				var materialIDIndex139 = file.get_8()
-				var materialIDIndex140 = file.get_8()
-				var materialIDIndex141 = file.get_8()
-				var materialIDIndex142 = file.get_8()
-				var materialIDIndex143 = file.get_8()
-				var materialIDIndex144 = file.get_8()
-				
-				var materialIDIndex145 = file.get_8()
-				var materialIDIndex146 = file.get_8()
-				var materialIDIndex147 = file.get_8()
-				var materialIDIndex148 = file.get_8()
-				var materialIDIndex149 = file.get_8()
-				var materialIDIndex150 = file.get_8()
-				var materialIDIndex151 = file.get_8()
-				var materialIDIndex152 = file.get_8()
-				var materialIDIndex153 = file.get_8()
-				var materialIDIndex154 = file.get_8()
-				var materialIDIndex155 = file.get_8()
-				var materialIDIndex156 = file.get_8()
-				var materialIDIndex157 = file.get_8()
-				var materialIDIndex158 = file.get_8()
-				var materialIDIndex159 = file.get_8()
-				var materialIDIndex160 = file.get_8()
-				
-				var materialIDIndex161 = file.get_8()
-				var materialIDIndex162 = file.get_8()
-				var materialIDIndex163 = file.get_8()
-				var materialIDIndex164 = file.get_8()
-				var materialIDIndex165 = file.get_8()
-				var materialIDIndex166 = file.get_8()
-				var materialIDIndex167 = file.get_8()
-				var materialIDIndex168 = file.get_8()
-				var materialIDIndex169 = file.get_8()
-				var materialIDIndex170 = file.get_8()
-				var materialIDIndex171 = file.get_8()
-				var materialIDIndex172 = file.get_8()
-				var materialIDIndex173 = file.get_8()
-				var materialIDIndex174 = file.get_8()
-				var materialIDIndex175 = file.get_8()
-				var materialIDIndex176 = file.get_8()
-				var materialIDIndex177 = file.get_8()
-				var materialIDIndex178 = file.get_8()
-				var materialIDIndex179 = file.get_8()
-				var materialIDIndex180 = file.get_8()
-				var materialIDIndex181 = file.get_8()
-				var materialIDIndex182 = file.get_8()
-				var materialIDIndex183 = file.get_8()
-				var materialIDIndex184 = file.get_8()
-				var materialIDIndex185 = file.get_8()
-				var materialIDIndex186 = file.get_8()
-				var materialIDIndex187 = file.get_8()
-				var materialIDIndex188 = file.get_8()
-				var materialIDIndex189 = file.get_8()
-				var materialIDIndex190 = file.get_8()
-				var materialIDIndex191 = file.get_8()
-				var materialIDIndex192 = file.get_8()
-				
-				var materialIDIndex193 = file.get_8()
-				var materialIDIndex194 = file.get_8()
-				var materialIDIndex195 = file.get_8()
-				var materialIDIndex196 = file.get_8()
-				var materialIDIndex197 = file.get_8()
-				var materialIDIndex198 = file.get_8()
-				var materialIDIndex199 = file.get_8()
-				var materialIDIndex200 = file.get_8()
-				
-				var materialIDIndex201 = file.get_8()
-				var materialIDIndex202 = file.get_8()
-				var materialIDIndex203 = file.get_8()
-				var materialIDIndex204 = file.get_8()
-				var materialIDIndex205 = file.get_8()
-				var materialIDIndex206 = file.get_8()
-				var materialIDIndex207 = file.get_8()
-				var materialIDIndex208 = file.get_8()
-				var materialIDIndex209 = file.get_8()
-				var materialIDIndex210 = file.get_8()
-				var materialIDIndex211 = file.get_8()
-				var materialIDIndex212 = file.get_8()
-				var materialIDIndex213 = file.get_8()
-				var materialIDIndex214 = file.get_8()
-				var materialIDIndex215 = file.get_8()
-				var materialIDIndex216 = file.get_8()
-				var materialIDIndex217 = file.get_8()
-				var materialIDIndex218 = file.get_8()
-				var materialIDIndex219 = file.get_8()
-				var materialIDIndex220 = file.get_8()
-				var materialIDIndex221 = file.get_8()
-				var materialIDIndex222 = file.get_8()
-				var materialIDIndex223 = file.get_8()
-				var materialIDIndex224 = file.get_8()
-				var materialIDIndex225 = file.get_8()
-				var materialIDIndex226 = file.get_8()
-				var materialIDIndex227 = file.get_8()
-				var materialIDIndex228 = file.get_8()
-				var materialIDIndex229 = file.get_8()
-				var materialIDIndex230 = file.get_8()
-				var materialIDIndex231 = file.get_8()
-				var materialIDIndex232 = file.get_8()
-				var materialIDIndex233 = file.get_8()
-				var materialIDIndex234 = file.get_8()
-				var materialIDIndex235 = file.get_8()
-				var materialIDIndex236 = file.get_8()
-				var materialIDIndex237 = file.get_8()
-				var materialIDIndex238 = file.get_8()
-				var materialIDIndex239 = file.get_8()
-				var materialIDIndex240 = file.get_8()
-				var materialIDIndex241 = file.get_8()
-				var materialIDIndex242 = file.get_8()
-				var materialIDIndex243 = file.get_8()
-				var materialIDIndex244 = file.get_8()
-				var materialIDIndex245 = file.get_8()
-				var materialIDIndex246 = file.get_8()
-				var materialIDIndex247 = file.get_8()
-				var materialIDIndex248 = file.get_8()
-				var materialIDIndex249 = file.get_8()
-				var materialIDIndex250 = file.get_8()
-				var materialIDIndex251 = file.get_8()
-				var materialIDIndex252 = file.get_8()
-				var materialIDIndex253 = file.get_8()
-				var materialIDIndex254 = file.get_8()
-				var materialIDIndex255 = file.get_8()
-				var materialIDIndex256 = file.get_8()
-				var materialIDIndex257 = file.get_8()
-				var materialIDIndex258 = file.get_8()
-				var materialIDIndex259 = file.get_8()
-				var materialIDIndex260 = file.get_8()
-				var materialIDIndex261 = file.get_8()
-				var materialIDIndex262 = file.get_8()
-				var materialIDIndex263 = file.get_8()
-				var materialIDIndex264 = file.get_8()
-				var materialIDIndex265 = file.get_8()
-				var materialIDIndex266 = file.get_8()
-				var materialIDIndex267 = file.get_8()
-				var materialIDIndex268 = file.get_8()
-				var materialIDIndex269 = file.get_8()
-				var materialIDIndex270 = file.get_8()
-				var materialIDIndex271 = file.get_8()
-				var materialIDIndex272 = file.get_8()
-				var materialFlag = file.get_32()
-				var unknown1 = file.get_32()
-				var unknown2 = file.get_32()
-				var unknown3 = file.get_32()
-				var unknown4 = file.get_32()
-				var unknown5 = file.get_32()
-				var materialIDIndexSomething = file.get_32()
-				var unknown6 = file.get_32()
-				var unknown7 = file.get_32()
-				var redByte1 = file.get_8()
-				var greenByte1 = file.get_8()
-				var BlueByte1 = file.get_8()
-				var alphaByte1 = file.get_8()
-				var redByte2 = file.get_8()
-				var greenByte2 = file.get_8()
-				var BlueByte2 = file.get_8()
-				var alphaByte2 = file.get_8()
-				var redByte3 = file.get_8()
-				var greenByte3 = file.get_8()
-				var BlueByte3 = file.get_8()
-				var alphaByte3 = file.get_8()
-				var unknown8 = file.get_32()
-				var materialflag2 = file.get_32()
-				var unknown9 = file.get_32()
-				var unknown10 = file.get_32()
-				var unknown11 = file.get_32()
-				var unknown12 =  file.get_32()
-				var unknown13 =  file.get_32()
-				var Spec = file.get_float()
-				var materialflag3 = file.get_32()
-				var unknown14 =  file.get_32()
-				var unknown15 =  file.get_32()
-				var unknown16 =  file.get_32()
-				var diffuseRed = file.get_float()
-				var diffuseGreen = file.get_float()
-				var diffuseBlue = file.get_float()
-				var unknown17 =  file.get_32()
-				var unknown18 =  file.get_32()
-				var unknown19 =  file.get_32()
-				var unknown20 =  file.get_32()
-				var roughness = file.get_float()
-				var unkFloat = file.get_float()
-				var TextureID = file.get_32()
-				var MaterialID = file.get_32()
-				var unknown21 = file.get_32()
-				
-				var unknown22 = file.get_32()
-				var unknown23 = file.get_32()
-				var unknown24 = file.get_32()
-				var unknown25 = file.get_32()
-				var unknown26 = file.get_32()
-				var unknown27 = file.get_32()
-				var unknown28 = file.get_32()
-				var unknown29 = file.get_32()
-		#elif Chunk == int(810173007):
-			#var ObjectSize = file.get_32()
-			#var ObjectCount = file.get_32()
-			#var ObjectUnknown = file.get_32()
-			##var UnknownOffset = file.get_buffer(int(24)) # 1 2 3 4 5 6 7
-			#for i in range(ObjectCount):
-				#pass"""
-		elif Chunk == int(16777475):
+		if Chunk == int(16777475):
 			var unk01 = file.get_8()
 			var unk02 = file.get_8()
 			var vertexCount = file.get_8()
@@ -603,89 +343,812 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 			#var faces = [[0,1,2]]
 			var surf_tool : SurfaceTool
 			var vertices : PackedVector3Array
+			var faces : PackedVector3Array
 			vertices.resize(vertexCount)
+			faces.resize(vertexCount)
 			surf_tool = SurfaceTool.new()
-			surf_tool.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
-			for i in range(vertexCount):
-				#vertices[i] = Vector3(file.get_float(),file.get_float(),file.get_float())
-				#var nz = file.get_float()
-				var vx = file.get_float()
-				var vy = file.get_float()
-				var vz = file.get_float()
-				var nz = file.get_float()
-				surf_tool.add_vertex(Vector3(vx,vy,vz))
+			surf_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+			
+			if vertexCount ==int(3):
+				
+				var fa=-3
+				var fb=-2
+				var fc=-1
+				for j in range(1):
+					#vertices[i] = Vector3(file.get_float(),file.get_float(),file.get_float())
+					#var nz = file.get_float()
+					var vx = file.get_float()
+					var vy = file.get_float()
+					var vz = file.get_float()
+					var type4 = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx2 = file.get_float()
+					var vy2 = file.get_float()
+					var vz2 = file.get_float()
+					var type4a = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx3 = file.get_float()
+					var vy3 = file.get_float()
+					var vz3 = file.get_float()
+					var type4b = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					fa+=1*3
+					fb+=1*3
+					fc+=1*3
+					if type4 == int(1):
+						if type4a == int(1):
+							if type4b == int(0):
+								surf_tool.add_vertex(Vector3(vx,vy,vz))
+								surf_tool.add_vertex(Vector3(vx2,vy2,vz2))
+								surf_tool.add_vertex(Vector3(vx3,vy3,vz3))
+								surf_tool.add_index(fa)
+								surf_tool.add_index(fb)
+								surf_tool.add_index(fc)
+				
+			elif vertexCount ==int(4):
+				var fa1=-3
+				var fb1=-2
+				var fc1=-1
+				var fa1_=-4
+				var fb1_=-3
+				var fc1_=-2
+				for j in range(1):
+							#vertices[i] = Vector3(file.get_float(),file.get_float(),file.get_float())
+							#var nz = file.get_float()
+					var vx4 = file.get_float()
+					var vy4 = file.get_float()
+					var vz4 = file.get_float()
+					var type4c = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx5 = file.get_float()
+					var vy5 = file.get_float()
+					var vz5 = file.get_float()
+					var type4d = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx6 = file.get_float()
+					var vy6 = file.get_float()
+					var vz6 = file.get_float()
+					var type4e = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					var vx7 = file.get_float()
+					var vy7 = file.get_float()
+					var vz7 = file.get_float()
+					var type4f = file.get_8()
+					var value1c = file.get_8()
+					var normalZc = file.get_16()
+					fa1+=1*4
+					fb1+=1*4
+					fc1+=1*4
+					fa1_+=1*4
+					fb1_+=1*4
+					fc1_+=1*4
+					if type4c == int(1):
+						if type4d == int(1):
+							if type4e == int(0):
+								if type4f == int(0):
+									surf_tool.add_vertex(Vector3(vx4,vy4,vz4))
+									surf_tool.add_vertex(Vector3(vx5,vy5,vz5))
+									surf_tool.add_vertex(Vector3(vx6,vy6,vz6))
+									surf_tool.add_vertex(Vector3(vx7,vy7,vz7))
+									surf_tool.add_index(fa1)
+									surf_tool.add_index(fb1)
+									surf_tool.add_index(fc1)
+									surf_tool.add_index(fa1_)
+									surf_tool.add_index(fb1_)
+									surf_tool.add_index(fc1_)
+			elif vertexCount ==int(5):
+				var fa11=-3
+				var fb11=-2
+				var fc11=-1
+				var fa11_=-4
+				var fb11_=-3
+				var fc11_=-2
+				var fa11__=-5
+				var fb11__=-4
+				var fc11__=-3
+				for j in range(1):
+							#vertices[i] = Vector3(file.get_float(),file.get_float(),file.get_float())
+							#var nz = file.get_float()
+					var vx8 = file.get_float()
+					var vy8 = file.get_float()
+					var vz8 = file.get_float()
+					var type4g = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx9 = file.get_float()
+					var vy9 = file.get_float()
+					var vz9 = file.get_float()
+					var type4h = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx10 = file.get_float()
+					var vy10 = file.get_float()
+					var vz10 = file.get_float()
+					var type4i = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					var vx11 = file.get_float()
+					var vy11 = file.get_float()
+					var vz11 = file.get_float()
+					var type4j = file.get_8()
+					var value1c = file.get_8()
+					var normalZc = file.get_16()
+					var vx12 = file.get_float()
+					var vy12 = file.get_float()
+					var vz12 = file.get_float()
+					var type4k = file.get_8()
+					var value1d = file.get_8()
+					var normalZd = file.get_16()
+					fa11+=1*5
+					fb11+=1*5
+					fc11+=1*5
+					fa11_+=1*5
+					fb11_+=1*5
+					fc11_+=1*5
+					fa11__+=1*5
+					fb11__+=1*5
+					fc11__+=1*5
+					if type4g == int(1):
+						if type4h == int(1):
+							if type4i == int(0):
+								if type4j == int(0):
+									if type4k == int(0):
+										surf_tool.add_vertex(Vector3(vx8,vy8,vz8))
+										surf_tool.add_vertex(Vector3(vx9,vy9,vz9))
+										surf_tool.add_vertex(Vector3(vx10,vy10,vz10))
+										surf_tool.add_vertex(Vector3(vx11,vy11,vz11))
+										surf_tool.add_vertex(Vector3(vx12,vy12,vz12))
+										surf_tool.add_index(fa11)
+										surf_tool.add_index(fb11)
+										surf_tool.add_index(fc11)
+										surf_tool.add_index(fa11_)
+										surf_tool.add_index(fb11_)
+										surf_tool.add_index(fc11_)
+										surf_tool.add_index(fa11__)
+										surf_tool.add_index(fb11__)
+										surf_tool.add_index(fc11__)
+			
+			elif vertexCount ==int(6):
+				var fa111=-3
+				var fb111=-2
+				var fc111=-1
+				var fa111_=-4
+				var fb111_=-3
+				var fc111_=-2
+				var fa111__=-5
+				var fb111__=-4
+				var fc111__=-3
+				var fa111___=-6
+				var fb111___=-5
+				var fc111___=-4
+				for j in range(1):
+							#vertices[i] = Vector3(file.get_float(),file.get_float(),file.get_float())
+							#var nz = file.get_float()
+					var vx13 = file.get_float()
+					var vy13 = file.get_float()
+					var vz13 = file.get_float()
+					var type4l = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx14 = file.get_float()
+					var vy14 = file.get_float()
+					var vz14 = file.get_float()
+					var type4m = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx15 = file.get_float()
+					var vy15 = file.get_float()
+					var vz15 = file.get_float()
+					var type4n = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					var vx16 = file.get_float()
+					var vy16 = file.get_float()
+					var vz16 = file.get_float()
+					var type4o = file.get_8()
+					var value1c = file.get_8()
+					var normalZc = file.get_16()
+					var vx17 = file.get_float()
+					var vy17 = file.get_float()
+					var vz17 = file.get_float()
+					var type4p = file.get_8()
+					var value1d = file.get_8()
+					var normalZd = file.get_16()
+					var vx18 = file.get_float()
+					var vy18 = file.get_float()
+					var vz18 = file.get_float()
+					var type4q = file.get_8()
+					var value1q = file.get_8()
+					var normalZq = file.get_16()
+					fa111+=1*6
+					fb111+=1*6
+					fc111+=1*6
+					fa111_+=1*6
+					fb111_+=1*6
+					fc111_+=1*6
+					fa111__+=1*6
+					fb111__+=1*6
+					fc111__+=1*6
+					fa111___+=1*6
+					fb111___+=1*6
+					fc111___+=1*6
+					if type4l == int(1):
+						if type4m == int(1):
+							if type4n == int(0):
+								if type4o == int(0):
+									if type4p == int(0):
+										if type4q == int(0):
+											surf_tool.add_vertex(Vector3(vx13,vy13,vz13))
+											surf_tool.add_vertex(Vector3(vx14,vy14,vz14))
+											surf_tool.add_vertex(Vector3(vx15,vy15,vz15))
+											surf_tool.add_vertex(Vector3(vx16,vy16,vz16))
+											surf_tool.add_vertex(Vector3(vx17,vy17,vz17))
+											surf_tool.add_vertex(Vector3(vx18,vy18,vz18))
+											surf_tool.add_index(fa111)
+											surf_tool.add_index(fb111)
+											surf_tool.add_index(fc111)
+											surf_tool.add_index(fa111_)
+											surf_tool.add_index(fb111_)
+											surf_tool.add_index(fc111_)
+											surf_tool.add_index(fa111__)
+											surf_tool.add_index(fb111__)
+											surf_tool.add_index(fc111__)
+											surf_tool.add_index(fa111___)
+											surf_tool.add_index(fb111___)
+											surf_tool.add_index(fc111___)
+			elif vertexCount ==int(7):
+				var fa1111=-3
+				var fb1111=-2
+				var fc1111=-1
+				var fa1111_=-4
+				var fb1111_=-3
+				var fc1111_=-2
+				var fa1111__=-5
+				var fb1111__=-4
+				var fc1111__=-3
+				var fa1111___=-6
+				var fb1111___=-5
+				var fc1111___=-4
+				var fa11111___=-7
+				var fb11111___=-6
+				var fc11111___=-5
+				for j in range(1):
+							#vertices[i] = Vector3(file.get_float(),file.get_float(),file.get_float())
+							#var nz = file.get_float()
+					var vx25 = file.get_float()
+					var vy25 = file.get_float()
+					var vz25 = file.get_float()
+					var type4x = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx26 = file.get_float()
+					var vy26 = file.get_float()
+					var vz26 = file.get_float()
+					var type4y = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx27 = file.get_float()
+					var vy27 = file.get_float()
+					var vz27 = file.get_float()
+					var type4z = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					var vx28 = file.get_float()
+					var vy28 = file.get_float()
+					var vz28 = file.get_float()
+					var type4aa = file.get_8()
+					var value1c = file.get_8()
+					var normalZc = file.get_16()
+					var vx29 = file.get_float()
+					var vy29 = file.get_float()
+					var vz29 = file.get_float()
+					var type4ab = file.get_8()
+					var value1d = file.get_8()
+					var normalZd = file.get_16()
+					var vx30 = file.get_float()
+					var vy30 = file.get_float()
+					var vz30 = file.get_float()
+					var type4ac = file.get_8()
+					var value1q = file.get_8()
+					var normalZq = file.get_16()
+					var vx31 = file.get_float()
+					var vy31 = file.get_float()
+					var vz31 = file.get_float()
+					var type4ad = file.get_8()
+					var value1ad = file.get_8()
+					var normalZad = file.get_16()
+					fa1111+=1*7
+					fb1111+=1*7
+					fc1111+=1*7
+					fa1111_+=1*7
+					fb1111_+=1*7
+					fc1111_+=1*7
+					fa1111__+=1*7
+					fb1111__+=1*7
+					fc1111__+=1*7
+					fa1111___+=1*7
+					fb1111___+=1*7
+					fc1111___+=1*7
+					fa11111___+=1*7
+					fb11111___+=1*7
+					fc11111___+=1*7
+					if type4x == int(1):
+						if type4y == int(1):
+							if type4z == int(0):
+								if type4aa == int(0):
+									if type4ab == int(0):
+										if type4ac == int(0):
+											if type4ad == int(0):
+												surf_tool.add_vertex(Vector3(vx25,vy25,vz25))
+												surf_tool.add_vertex(Vector3(vx26,vy26,vz26))
+												surf_tool.add_vertex(Vector3(vx27,vy27,vz27))
+												surf_tool.add_vertex(Vector3(vx28,vy28,vz28))
+												surf_tool.add_vertex(Vector3(vx29,vy29,vz29))
+												surf_tool.add_vertex(Vector3(vx30,vy30,vz30))
+												surf_tool.add_vertex(Vector3(vx31,vy31,vz31))
+												surf_tool.add_index(fa1111)
+												surf_tool.add_index(fb1111)
+												surf_tool.add_index(fc1111)
+												surf_tool.add_index(fa1111_)
+												surf_tool.add_index(fb1111_)
+												surf_tool.add_index(fc1111_)
+												surf_tool.add_index(fa1111__)
+												surf_tool.add_index(fb1111__)
+												surf_tool.add_index(fc1111__)
+												surf_tool.add_index(fa1111___)
+												surf_tool.add_index(fb1111___)
+												surf_tool.add_index(fc1111___)
+												surf_tool.add_index(fa11111___)
+												surf_tool.add_index(fb11111___)
+												surf_tool.add_index(fc11111___)
+			elif vertexCount ==int(8):
+				var fa1111=-3
+				var fb1111=-2
+				var fc1111=-1
+				var fa1111_=-4
+				var fb1111_=-3
+				var fc1111_=-2
+				var fa1111__=-5
+				var fb1111__=-4
+				var fc1111__=-3
+				var fa1111___=-6
+				var fb1111___=-5
+				var fc1111___=-4
+				var fa11111___=-7
+				var fb11111___=-6
+				var fc11111___=-5
+				var fa111111___=-8
+				var fb111111___=-7
+				var fc111111___=-6
+				for j in range(1):
+					var vx32 = file.get_float()
+					var vy32 = file.get_float()
+					var vz32 = file.get_float()
+					var type4ae = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx33 = file.get_float()
+					var vy33 = file.get_float()
+					var vz33 = file.get_float()
+					var type4af = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx34 = file.get_float()
+					var vy34 = file.get_float()
+					var vz34 = file.get_float()
+					var type4ag = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					var vx35 = file.get_float()
+					var vy35 = file.get_float()
+					var vz35 = file.get_float()
+					var type4ah = file.get_8()
+					var value1c = file.get_8()
+					var normalZc = file.get_16()
+					var vx36 = file.get_float()
+					var vy36 = file.get_float()
+					var vz36 = file.get_float()
+					var type4ai = file.get_8()
+					var value1d = file.get_8()
+					var normalZd = file.get_16()
+					var vx37 = file.get_float()
+					var vy37 = file.get_float()
+					var vz37 = file.get_float()
+					var type4aj = file.get_8()
+					var value1q = file.get_8()
+					var normalZq = file.get_16()
+					var vx38 = file.get_float()
+					var vy38 = file.get_float()
+					var vz38 = file.get_float()
+					var type4ak = file.get_8()
+					var value1ad = file.get_8()
+					var normalZad = file.get_16()
+					var vx39 = file.get_float()
+					var vy39 = file.get_float()
+					var vz39 = file.get_float()
+					var type4al = file.get_8()
+					var value1al = file.get_8()
+					var normalZal = file.get_16()
+					fa1111+=1*8
+					fb1111+=1*8
+					fc1111+=1*8
+					fa1111_+=1*8
+					fb1111_+=1*8
+					fc1111_+=1*8
+					fa1111__+=1*8
+					fb1111__+=1*8
+					fc1111__+=1*8
+					fa1111___+=1*8
+					fb1111___+=1*8
+					fc1111___+=1*8
+					fa11111___+=1*8
+					fb11111___+=1*8
+					fc11111___+=1*8
+					fa111111___+=1*8
+					fb111111___+=1*8
+					fc111111___+=1*8
+					if type4ae == int(1):
+						if type4af == int(1):
+							if type4ag == int(0):
+								if type4ah == int(0):
+									if type4ai == int(0):
+										if type4aj == int(0):
+											if type4ak == int(0):
+												if type4al == int(0):
+													surf_tool.add_vertex(Vector3(vx32,vy32,vz32))
+													surf_tool.add_vertex(Vector3(vx33,vy33,vz33))
+													surf_tool.add_vertex(Vector3(vx34,vy34,vz34))
+													surf_tool.add_vertex(Vector3(vx35,vy35,vz35))
+													surf_tool.add_vertex(Vector3(vx36,vy36,vz36))
+													surf_tool.add_vertex(Vector3(vx37,vy37,vz37))
+													surf_tool.add_vertex(Vector3(vx38,vy38,vz38))
+													surf_tool.add_vertex(Vector3(vx39,vy39,vz39))
+													surf_tool.add_index(fa1111)
+													surf_tool.add_index(fb1111)
+													surf_tool.add_index(fc1111)
+													surf_tool.add_index(fa1111_)
+													surf_tool.add_index(fb1111_)
+													surf_tool.add_index(fc1111_)
+													surf_tool.add_index(fa1111__)
+													surf_tool.add_index(fb1111__)
+													surf_tool.add_index(fc1111__)
+													surf_tool.add_index(fa1111___)
+													surf_tool.add_index(fb1111___)
+													surf_tool.add_index(fc1111___)
+													surf_tool.add_index(fa11111___)
+													surf_tool.add_index(fb11111___)
+													surf_tool.add_index(fc11111___)
+													surf_tool.add_index(fa111111___)
+													surf_tool.add_index(fb111111___)
+													surf_tool.add_index(fc111111___)
+			elif vertexCount ==int(9):
+				var fa1111=-3
+				var fb1111=-2
+				var fc1111=-1
+				var fa1111_=-4
+				var fb1111_=-3
+				var fc1111_=-2
+				var fa1111__=-5
+				var fb1111__=-4
+				var fc1111__=-3
+				var fa1111___=-6
+				var fb1111___=-5
+				var fc1111___=-4
+				var fa11111___=-7
+				var fb11111___=-6
+				var fc11111___=-5
+				var fa111111___=-8
+				var fb111111___=-7
+				var fc111111___=-6
+				var fa1111111___=-9
+				var fb1111111___=-8
+				var fc1111111___=-7
+				for j in range(1):
+					var vx40 = file.get_float()
+					var vy40 = file.get_float()
+					var vz40 = file.get_float()
+					var type4am = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx41 = file.get_float()
+					var vy41 = file.get_float()
+					var vz41 = file.get_float()
+					var type4an = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx42 = file.get_float()
+					var vy42 = file.get_float()
+					var vz42 = file.get_float()
+					var type4ao = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					var vx43 = file.get_float()
+					var vy43 = file.get_float()
+					var vz43 = file.get_float()
+					var type4ap = file.get_8()
+					var value1c = file.get_8()
+					var normalZc = file.get_16()
+					var vx44 = file.get_float()
+					var vy44 = file.get_float()
+					var vz44 = file.get_float()
+					var type4aq = file.get_8()
+					var value1d = file.get_8()
+					var normalZd = file.get_16()
+					var vx45 = file.get_float()
+					var vy45 = file.get_float()
+					var vz45 = file.get_float()
+					var type4ar = file.get_8()
+					var value1q = file.get_8()
+					var normalZq = file.get_16()
+					var vx46 = file.get_float()
+					var vy46 = file.get_float()
+					var vz46 = file.get_float()
+					var type4as = file.get_8()
+					var value1ad = file.get_8()
+					var normalZad = file.get_16()
+					var vx47 = file.get_float()
+					var vy47 = file.get_float()
+					var vz47 = file.get_float()
+					var type4at = file.get_8()
+					var value1al = file.get_8()
+					var normalZal = file.get_16()
+					var vx48 = file.get_float()
+					var vy48 = file.get_float()
+					var vz48 = file.get_float()
+					var type4au = file.get_8()
+					var value1au = file.get_8()
+					var normalZau = file.get_16()
+					fa1111+=1*9
+					fb1111+=1*9
+					fc1111+=1*9
+					fa1111_+=1*9
+					fb1111_+=1*9
+					fc1111_+=1*9
+					fa1111__+=1*9
+					fb1111__+=1*9
+					fc1111__+=1*9
+					fa1111___+=1*9
+					fb1111___+=1*9
+					fc1111___+=1*9
+					fa11111___+=1*9
+					fb11111___+=1*9
+					fc11111___+=1*9
+					fa111111___+=1*9
+					fb111111___+=1*9
+					fc111111___+=1*9
+					fa1111111___+=1*9
+					fb1111111___+=1*9
+					fc1111111___+=1*9
+					if type4am == int(1):
+						if type4an == int(1):
+							if type4ao == int(0):
+								if type4ap == int(0):
+									if type4aq == int(0):
+										if type4ar == int(0):
+											if type4as == int(0):
+												if type4at == int(0):
+													if type4au == int(0):
+														surf_tool.add_vertex(Vector3(vx40,vy40,vz40))
+														surf_tool.add_vertex(Vector3(vx41,vy41,vz41))
+														surf_tool.add_vertex(Vector3(vx42,vy42,vz42))
+														surf_tool.add_vertex(Vector3(vx43,vy43,vz43))
+														surf_tool.add_vertex(Vector3(vx44,vy44,vz44))
+														surf_tool.add_vertex(Vector3(vx45,vy45,vz45))
+														surf_tool.add_vertex(Vector3(vx46,vy46,vz46))
+														surf_tool.add_vertex(Vector3(vx47,vy47,vz47))
+														surf_tool.add_vertex(Vector3(vx48,vy48,vz48))
+														surf_tool.add_index(fa1111)
+														surf_tool.add_index(fb1111)
+														surf_tool.add_index(fc1111)
+														surf_tool.add_index(fa1111_)
+														surf_tool.add_index(fb1111_)
+														surf_tool.add_index(fc1111_)
+														surf_tool.add_index(fa1111__)
+														surf_tool.add_index(fb1111__)
+														surf_tool.add_index(fc1111__)
+														surf_tool.add_index(fa1111___)
+														surf_tool.add_index(fb1111___)
+														surf_tool.add_index(fc1111___)
+														surf_tool.add_index(fa11111___)
+														surf_tool.add_index(fb11111___)
+														surf_tool.add_index(fc11111___)
+														surf_tool.add_index(fa111111___)
+														surf_tool.add_index(fb111111___)
+														surf_tool.add_index(fc111111___)
+														surf_tool.add_index(fa1111111___)
+														surf_tool.add_index(fb1111111___)
+														surf_tool.add_index(fc1111111___)
+			elif vertexCount ==int(10):
+				var fa1111=-3
+				var fb1111=-2
+				var fc1111=-1
+				var fa1111_=-4
+				var fb1111_=-3
+				var fc1111_=-2
+				var fa1111__=-5
+				var fb1111__=-4
+				var fc1111__=-3
+				var fa1111___=-6
+				var fb1111___=-5
+				var fc1111___=-4
+				var fa11111___=-7
+				var fb11111___=-6
+				var fc11111___=-5
+				var fa111111___=-8
+				var fb111111___=-7
+				var fc111111___=-6
+				var fa1111111___=-9
+				var fb1111111___=-8
+				var fc1111111___=-7
+				var fa11111111___=-10
+				var fb11111111___=-9
+				var fc11111111___=-8
+				for j in range(1):
+					var vx41 = file.get_float()
+					var vy41 = file.get_float()
+					var vz41 = file.get_float()
+					var type4av = file.get_8()
+					var value1 = file.get_8()
+					var normalZ = file.get_16()
+					var vx42 = file.get_float()
+					var vy42 = file.get_float()
+					var vz42 = file.get_float()
+					var type4aw = file.get_8()
+					var value12a = file.get_8()
+					var normalZa = file.get_16()
+					var vx43 = file.get_float()
+					var vy43 = file.get_float()
+					var vz43 = file.get_float()
+					var type4ax = file.get_8()
+					var value1b = file.get_8()
+					var normalZb = file.get_16()
+					var vx44 = file.get_float()
+					var vy44 = file.get_float()
+					var vz44 = file.get_float()
+					var type4ay = file.get_8()
+					var value1c = file.get_8()
+					var normalZc = file.get_16()
+					var vx45 = file.get_float()
+					var vy45 = file.get_float()
+					var vz45 = file.get_float()
+					var type4az = file.get_8()
+					var value1d = file.get_8()
+					var normalZd = file.get_16()
+					var vx46 = file.get_float()
+					var vy46 = file.get_float()
+					var vz46 = file.get_float()
+					var type4aaa = file.get_8()
+					var value1q = file.get_8()
+					var normalZq = file.get_16()
+					var vx47 = file.get_float()
+					var vy47 = file.get_float()
+					var vz47 = file.get_float()
+					var type4aab = file.get_8()
+					var value1ad = file.get_8()
+					var normalZad = file.get_16()
+					var vx48 = file.get_float()
+					var vy48 = file.get_float()
+					var vz48 = file.get_float()
+					var type4aac = file.get_8()
+					var value1al = file.get_8()
+					var normalZal = file.get_16()
+					var vx49 = file.get_float()
+					var vy49 = file.get_float()
+					var vz49 = file.get_float()
+					var type4aad = file.get_8()
+					var value1au = file.get_8()
+					var normalZau = file.get_16()
+					var vx50 = file.get_float()
+					var vy50 = file.get_float()
+					var vz50 = file.get_float()
+					var type4aae = file.get_8()
+					var value1ae = file.get_8()
+					var normalZae = file.get_16()
+					fa1111+=1*10
+					fb1111+=1*10
+					fc1111+=1*10
+					fa1111_+=1*10
+					fb1111_+=1*10
+					fc1111_+=1*10
+					fa1111__+=1*10
+					fb1111__+=1*10
+					fc1111__+=1*10
+					fa1111___+=1*10
+					fb1111___+=1*10
+					fc1111___+=1*10
+					fa11111___+=1*10
+					fb11111___+=1*10
+					fc11111___+=1*10
+					fa111111___+=1*10
+					fb111111___+=1*10
+					fc111111___+=1*10
+					fa1111111___+=1*10
+					fb1111111___+=1*10
+					fc1111111___+=1*10
+					fa11111111___+=1*10
+					fb11111111___+=1*10
+					fc11111111___+=1*10
+					if type4av == int(1):
+						if type4aw == int(1):
+							if type4ax == int(0):
+								if type4ay == int(0):
+									if type4az == int(0):
+										if type4aaa == int(0):
+											if type4aab == int(0):
+												if type4aac == int(0):
+													if type4aad == int(0):
+														if type4aae == int(0):
+															surf_tool.add_vertex(Vector3(vx41,vy41,vz41))
+															surf_tool.add_vertex(Vector3(vx42,vy42,vz42))
+															surf_tool.add_vertex(Vector3(vx43,vy43,vz43))
+															surf_tool.add_vertex(Vector3(vx44,vy44,vz44))
+															surf_tool.add_vertex(Vector3(vx45,vy45,vz45))
+															surf_tool.add_vertex(Vector3(vx46,vy46,vz46))
+															surf_tool.add_vertex(Vector3(vx47,vy47,vz47))
+															surf_tool.add_vertex(Vector3(vx48,vy48,vz48))
+															surf_tool.add_vertex(Vector3(vx49,vy49,vz49))
+															surf_tool.add_vertex(Vector3(vx50,vy50,vz50))
+															surf_tool.add_index(fa1111)
+															surf_tool.add_index(fb1111)
+															surf_tool.add_index(fc1111)
+															surf_tool.add_index(fa1111_)
+															surf_tool.add_index(fb1111_)
+															surf_tool.add_index(fc1111_)
+															surf_tool.add_index(fa1111__)
+															surf_tool.add_index(fb1111__)
+															surf_tool.add_index(fc1111__)
+															surf_tool.add_index(fa1111___)
+															surf_tool.add_index(fb1111___)
+															surf_tool.add_index(fc1111___)
+															surf_tool.add_index(fa11111___)
+															surf_tool.add_index(fb11111___)
+															surf_tool.add_index(fc11111___)
+															surf_tool.add_index(fa111111___)
+															surf_tool.add_index(fb111111___)
+															surf_tool.add_index(fc111111___)
+															surf_tool.add_index(fa1111111___)
+															surf_tool.add_index(fb1111111___)
+															surf_tool.add_index(fc1111111___)
+															surf_tool.add_index(fa11111111___)
+															surf_tool.add_index(fb11111111___)
+															surf_tool.add_index(fc11111111___)
 			array_mesh = surf_tool.commit(array_mesh)
 		#elif Chunk == int(1112099905):
 			#var ActivateALIB = Animation.new()
 			#var ALIBSize = file.get_32()
 			#break
 			
-		elif Chunk == int(1396985410):
-			var BNDS_Size = file.get_32()
-			var BNDS_Ver = file.get_32()
-			var BNDS_Count = file.get_32()
-			if BNDS_Size == int(16):
-				pass
-			elif BNDS_Size:
-				
-				var BNDS_Unk01 = file.get_32()
-				var BNDS_Unk02 = file.get_32()
-				for i in range(BNDS_Count):
-					var bnds_splinex = file.get_float()
-					var bnds_spliney = file.get_float()
-					var bnds_splinez = file.get_float()
-					
-					var BNDS_unk_01 = file.get_float()
-					var BNDS_unk_02 = file.get_float()
-					var BNDS_unk_03 = file.get_float()
-					var BNDS_unk_04 = file.get_float()
-					var BNDS_unk_05 = file.get_float()
-					var BNDS_unk_06 = file.get_float()
-					var BNDS_unk_07 = file.get_float()
-					var BNDS_unk_08 = file.get_float()
-					var BNDS_unk_09 = file.get_float()
-					BNDS3DPath.add_point(Vector3(bnds_splinex,bnds_spliney,bnds_splinez))
-				
 		elif Chunk == int(810832723):
-			var SplineSetSize = file.get_32()
-			var SplineCount = file.get_32()
-			var SplineCount2 = file.get_32()
-			if SplineSetSize == int(16):
-				pass
-			elif SplineSetSize:
-				var SplineUnk = file.get_32()
-				var SST0E2 = file.get_32()
-				var SSEUnk = file.get_32()
-				for i in range(SST0E2):
-					var splineX = file.get_float()
-					var splineY = file.get_float()
-					var splineZ = file.get_float()
-					path3d___.add_point(Vector3(splineX,splineY,splineZ))
-					
 			break
 	
 	
-	var path3d_Follow := PathFollow3D.new()
-	path3d_Follow.name = "Follow Spline Set"
-	root_node.add_child(path3d_Follow)
-	path3d_Follow.reparent(path3d_)
-	path3d_Follow.owner = root_node
+	#var path3d_Follow := PathFollow3D.new()
+	#path3d_Follow.name = "Follow Spline Set"
+	#root_node.add_child(path3d_Follow)
+	#path3d_Follow.reparent(path3d_)
+	#path3d_Follow.owner = root_node
 	
-	var BNDS_Follow := PathFollow3D.new()
-	BNDS_Follow.name = "Follow Bounds"
-	root_node.add_child(BNDS_Follow)
-	BNDS_Follow.reparent(Bpath3d_)
-	BNDS_Follow.owner = root_node
+	#var BNDS_Follow := PathFollow3D.new()
+	#BNDS_Follow.name = "Follow Bounds"
+	#root_node.add_child(BNDS_Follow)
+	#BNDS_Follow.reparent(Bpath3d_)
+	#BNDS_Follow.owner = root_node
 	
 	mesh_instance.mesh = array_mesh
 	mesh_instance.name = "Objects"
 	root_node.add_child(mesh_instance)
 	mesh_instance.owner = root_node
 	
-	var AnimationPlayerNode3D_ := AnimationPlayer.new()
-	AnimationPlayerNode3D_.name = "Animation Library"
-	root_node.add_child(AnimationPlayerNode3D_)
-	AnimationPlayerNode3D_.owner = root_node
+	#var AnimationPlayerNode3D_ := AnimationPlayer.new()
+	#AnimationPlayerNode3D_.name = "Animation Library"
+	#root_node.add_child(AnimationPlayerNode3D_)
+	#AnimationPlayerNode3D_.owner = root_node
 	var packed_scene := PackedScene.new();
 	
 	if (packed_scene.pack(root_node)):
