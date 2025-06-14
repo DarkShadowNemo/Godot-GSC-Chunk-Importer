@@ -14,6 +14,7 @@ func _primary_mesh_(file : FileAccess, source_file : String):
 	
 	var vertices : PackedVector3Array
 	var faces : PackedVector3Array
+	var normals : PackedVector3Array 
 	
 	var immeediate_mesh_ := MeshInstance3D.new()
 	
@@ -43,6 +44,8 @@ func _primary_mesh_(file : FileAccess, source_file : String):
 			
 			vertices.resize(vertexCount)
 			faces.resize(vertexCount)
+			normals.resize(vertexCount)
+			
 			
 			surf_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 			
@@ -77,6 +80,8 @@ func _primary_mesh_(file : FileAccess, source_file : String):
 						surf_tool.add_index(b1)
 						surf_tool.add_index(a1)
 						surf_tool.add_index(c1)
+				surf_tool.generate_normals(true)
+						
 			array_mesh = surf_tool.commit(array_mesh)
 	immeediate_mesh_.mesh = array_mesh
 	immeediate_mesh_.name = "gsc"
