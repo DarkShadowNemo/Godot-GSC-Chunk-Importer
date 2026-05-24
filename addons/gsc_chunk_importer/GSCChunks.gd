@@ -70,9 +70,9 @@ func _import(source_file : String, save_path : String, options, r_platform_varia
 		return error
 		
 	file.seek(0)
-	var myScript1 = preload("res://addons/gsc_chunk_importer/prim_mesh/primary_mesh.gd")
+	var myScript1 = preload("res://addons/gsc_chunk_importer/strips/cleanup/chunk_strips.gd")
 	var test = myScript1.new()
-	test._primary_mesh_(file, source_file)
+	test._strip8_(file, source_file)
 	test.root_node.name = source_file.get_file().get_basename()
 	file.seek(0)
 	
